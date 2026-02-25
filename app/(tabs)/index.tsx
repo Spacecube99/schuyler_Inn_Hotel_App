@@ -1,98 +1,134 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import BulletItem from "@/components/bulletlist";
+import InfoBox from "@/components/infobox";
+import { LinkText } from "@/components/linkText";
+import { LinearGradient } from "expo-linear-gradient";
+import React from "react";
+import {
+  FlatList,
+  Image,
+  ScrollView,
+  Text,
+  useWindowDimensions,
+  View,
+} from "react-native";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Images } from "../../constants/carousel";
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+export default function Index() {
 
-export default function HomeScreen() {
+  const { width } = useWindowDimensions();
+
+  const images = Object.values(Images).map((source, index) => ({
+    id: index.toString(),
+    source,
+  }));
+
+
+  const insets = useSafeAreaInsets();
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <LinearGradient
+        colors={[ '#CBC3E3', 'purple', '#CBC3E3']}
+        style={{ flex: 1 }}
+      >
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      <ScrollView
+        contentContainerStyle={{ 
+          paddingTop: insets.top,
+          paddingBottom: insets.bottom + 20,
+          alignItems: 'center'
+        }}
+      >
+      
+        <View className='flex-1 w-full items-center mb-20'>
+          
+            <Text className="text-h1 text-white mb-5 text-center">
+              Welcome to the Schuyler Inn
+            </Text>
+
+          <View style={{ width }}>
+            <FlatList
+              data={images}
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <View style={{ width, alignItems: "center" }}>
+                  <Image
+                    source={ item.source }
+                    style={{
+                      width: width * 0.8,
+                      height: 256,
+                      borderWidth: 2,
+                      borderColor: "white",
+                    }}
+                    resizeMode="cover"
+                  ></Image>
+                </View>
+                )}
+            ></FlatList>
+          </View>
+
+          <View>
+            <Text className="text-center text-white text-h2">
+              Scroll images left and right for more
+            </Text>
+          </View>
+
+            <View className="flex-1 justify-center items-center">
+              <InfoBox>
+                  Our rooms are $65.00 per night for both
+                  single and double beds. Rooms are non-smoking.
+                  For reservervations or extended stays call:
+                  402-352-5454. For all other questions, call
+                  402-615-3327.
+              </InfoBox>
+              
+              <InfoBox>
+                  We accept cash, credit, visa, and mastercard.
+                  Sorry, no checks.
+              </InfoBox>
+
+              <InfoBox>
+                This hotel offers a public break room and small
+                kitchenette for guests to use. We are located next to
+                a grocery store/pharmacy, mexican restaurant, and car
+                wash.
+              </InfoBox>
+
+              <InfoBox>
+                Monday through Saturday hours are from 8:00AM to 10:00PM
+                Sundays are from 8:00AM to 6:00PM
+              </InfoBox>
+
+              <InfoBox>
+                Address: 222 West 16th Street, Schuyler, NE 68661
+                If you have any additional questions, contact us
+                with email at manager@schuylerinn.com
+              </InfoBox>
+
+              <InfoBox>
+                <View className="flex-1 items-center">
+                  <Text>Rooms include:</Text>
+                  <BulletItem>Free Wifi</BulletItem>
+                  <BulletItem>Non-smoking rooms</BulletItem>
+                  <BulletItem>Public break room</BulletItem>
+                  <BulletItem>Kitchenette access</BulletItem>
+                </View>
+              </InfoBox>
+              
+              <View className="flex-1 justify-center items-center mt-10">
+                <LinkText to="./about">
+                  About us
+                </LinkText>
+                <LinkText to="./reserve">
+                  Reserve a room
+                </LinkText>
+              </View>
+            </View>
+        </View>
+      </ScrollView>
+  </LinearGradient>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
