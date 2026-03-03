@@ -11,7 +11,7 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { Images } from "../../constants/carousel";
 
 export default function Index() {
@@ -29,24 +29,22 @@ export default function Index() {
   return (
     <LinearGradient
         colors={[ '#CBC3E3', 'purple', '#CBC3E3']}
-        style={{ flex: 1 }}
+        className="flex-1"
       >
 
-      <ScrollView
-        contentContainerStyle={{ 
-          paddingTop: insets.top,
-          paddingBottom: insets.bottom + 20,
-          alignItems: 'center'
-        }}
-      >
-      
+      <SafeAreaView className="flex-1">
+        <ScrollView
+          className="flex-1"
+          contentContainerClassName="items-center pb-10"
+        >
+               
         <View className='flex-1 w-full items-center mb-20'>
           
             <Text className="text-h1 text-white mb-5 text-center">
               Welcome to the Schuyler Inn
             </Text>
 
-          <View style={{ width }}>
+          <View className="w-full">
             <FlatList
               data={images}
               horizontal
@@ -54,15 +52,13 @@ export default function Index() {
               showsHorizontalScrollIndicator={false}
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
-                <View style={{ width, alignItems: "center" }}>
+                <View 
+                  style={{ width }}
+                  className="items-center"
+                >
                   <Image
                     source={ item.source }
-                    style={{
-                      width: width * 0.8,
-                      height: 256,
-                      borderWidth: 2,
-                      borderColor: "white",
-                    }}
+                    className="w-4/5 h-64 border-2 border-white"
                     resizeMode="cover"
                   ></Image>
                 </View>
@@ -71,12 +67,12 @@ export default function Index() {
           </View>
 
           <View>
-            <Text className="text-center text-white text-h2">
+            <Text className="text-center text-white text-h2 mt-4">
               Scroll images left and right for more
             </Text>
           </View>
 
-            <View className="flex-1 justify-center items-center">
+            <View className="justify-center items-center mt-6">
               <InfoBox>
                   Our rooms are $65.00 per night for both
                   single and double beds. Rooms are non-smoking.
@@ -109,8 +105,8 @@ export default function Index() {
               </InfoBox>
 
               <InfoBox>
-                <View className="flex-1 items-center">
-                  <Text>Rooms include:</Text>
+                <View className="items-center">
+                  <Text className="mb-2">Rooms include:</Text>
                   <BulletItem>Free Wifi</BulletItem>
                   <BulletItem>Non-smoking rooms</BulletItem>
                   <BulletItem>Public break room</BulletItem>
@@ -118,7 +114,7 @@ export default function Index() {
                 </View>
               </InfoBox>
               
-              <View className="flex-1 justify-center items-center mt-10">
+              <View className="justify-center items-center mt-10 space-y-4">
                 <LinkText to="./about">
                   About us
                 </LinkText>
@@ -129,6 +125,7 @@ export default function Index() {
             </View>
         </View>
       </ScrollView>
+    </SafeAreaView>
   </LinearGradient>
   );
 }

@@ -4,7 +4,6 @@ import React from 'react';
 import { Image, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { icons } from '../../constants/icons';
-import '../../global.css';
 
 const TabIcon = ({ focused, icon, title }: any) => {
     return (
