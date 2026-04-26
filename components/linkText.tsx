@@ -19,7 +19,7 @@ export function LinkText({
   
   return (
     <TouchableOpacity onPress={handlePress}>
-        <Text className={`text-h2 text-blue-500 underline ${visited ? 'text-purple-500' : 'text-blue-500'}`}
+        <Text className={`text-titleSmall-blue bg-white rounded-md w-72 text-center mt-20 underline ${visited ? 'text-purple-500' : 'text-blue-500'}`}
         >
           {children}
         </Text>

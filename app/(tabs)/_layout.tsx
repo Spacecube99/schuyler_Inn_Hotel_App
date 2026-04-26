@@ -55,11 +55,10 @@ export default function RootLayout() {
 
         tabBarBackground: () => (
             <LinearGradient
-                className="border-t-2"
+                className="flex-1 border-t-2"
                 colors={['yellow', 'lime', 'yellow']}
                 start={{ x:0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
-                style={{ flex: 1 }}
             ></LinearGradient>
         ),
     }}

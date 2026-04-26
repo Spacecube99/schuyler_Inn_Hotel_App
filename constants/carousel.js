@@ -1,6 +1,6 @@
 export const Images = {
-    image1: require("../assets/images/image1.png"),
-    image2: require("../assets/images/image2.png"),
-    image3: require("../assets/images/image3.png"),
-    image4: require("../assets/images/image4.png"),
+    image1: require("../assets/images/cruise_Image1.jpg"),
+    image2: require("../assets/images/cruise_Image2.jpg"),
+    image3: require("../assets/images/cruise_Image3.jpg"),
+    image4: require("../assets/images/cruise_Image4.jpg"),
 };
