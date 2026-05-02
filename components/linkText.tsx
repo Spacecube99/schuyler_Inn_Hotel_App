@@ -1,13 +1,13 @@
-import { RelativePathString, useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import { Href, useRouter } from 'expo-router';
+import React, { ReactNode, useState } from 'react';
 import { Text, TouchableOpacity } from "react-native";
 
 export function LinkText({ 
   children, 
   to,
  } : { 
-  children: string; 
-  to: RelativePathString;
+  children: ReactNode; 
+  to: Href;
 }) {
   const router = useRouter();
   const [visited, setVisited] = useState(false);

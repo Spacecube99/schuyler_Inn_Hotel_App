@@ -93,52 +93,51 @@ Total: $${totalPrice}`
   };
 
   return (
-    <LinearGradient colors={['#CBC3E3', 'purple', '#CBC3E3']} style={{ flex: 1 }}>
-      <SafeAreaView style={{ flex: 1 }}>
+    <LinearGradient colors={['#CBC3E3', 'purple', '#CBC3E3']} className='flex-1'>
+      <SafeAreaView className="flex-1">
         <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
-          <View style={{ alignItems: 'center' }}>
+          <View className="items-center align-middle">
 
-            <Text style={{ color: 'white', fontSize: 24, textAlign: 'center' }}>
+            <Text className="text-center text-4xl mt-14 color-white border-white border-b-2">
               Reservations
             </Text>
 
-            <View style={{ marginTop: 20, width: '80%', alignItems: 'center', zIndex: 1 }}>
-
+            <View className="mt-20 w-80 items-center">
+              
               {/* Inputs */}
-              <Text style={{ color: 'white', marginTop: 10 }}>Full Name:</Text>
+              <Text className="text-white mt-10">Full Name:</Text>
               <TextInput value={fullName} onChangeText={setFullName}
                 placeholder="Type here..."
-                style={{ backgroundColor: 'white', width: '100%', borderWidth: 1, textAlign: 'center' }}
+                className="bg-white w-full border-2 text-center"
               />
 
-              <Text style={{ color: 'white', marginTop: 20 }}>Phone Number:</Text>
+              <Text className="text-white mt-10">Phone Number:</Text>
               <TextInput value={phone} onChangeText={setPhone}
                 keyboardType="phone-pad"
                 placeholder="Phone Number..."
-                style={{ backgroundColor: 'white', width: '100%', borderWidth: 1, textAlign: 'center' }}
-              />
+                className="bg-white w-full border-2 text-center"              />
 
-              <Text style={{ color: 'white', marginTop: 20 }}>Email:</Text>
+              <Text className="text-white mt-10">Email:</Text>
               <TextInput value={email} onChangeText={setEmail}
                 keyboardType="email-address"
                 placeholder="Email..."
-                style={{ backgroundColor: 'white', width: '100%', borderWidth: 1, textAlign: 'center' }}
+                className="bg-white w-full border-2 text-center"
               />
 
-              <Text style={{ color: 'white', marginTop: 20 }}>Address:</Text>
+              <Text className="text-white mt-10">Address:</Text>
               <TextInput value={address} onChangeText={setAddress}
                 placeholder="Address..."
-                style={{ backgroundColor: 'white', width: '100%', borderWidth: 1, textAlign: 'center' }}
+                className="bg-white w-full border-2 text-center"
               />
 
-              <Text style={{ color: 'white', marginTop: 20 }}>License Plates:</Text>
+              <Text className="text-white mt-10">License Plates:</Text>
               <TextInput value={licensePlates} onChangeText={setLicensePlates}
                 placeholder="License Plates..."
-                style={{ backgroundColor: 'white', width: '100%', borderWidth: 1, textAlign: 'center' }}
+                className="bg-white w-full border-2 text-center"
               />
 
               {/* Dropdown */}
-              <Text style={{ color: 'white', marginTop: 20 }}>Room Type:</Text>
+              <Text className="text-white mt-20">Room Type:</Text>
               <View style={{ zIndex: 1000, width: '100%' }}>
                 <DropDownPicker
                   listMode="SCROLLVIEW"

@@ -2,39 +2,51 @@ import BulletItem from "@/components/bulletlist";
 import InfoBox from "@/components/infobox";
 import { LinkText } from "@/components/linkText";
 import { LinearGradient } from "expo-linear-gradient";
-import { RelativePathString } from "expo-router";
-import React from "react";
+import { Href } from "expo-router";
+import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   ScrollView,
   Text,
-  View
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 import { Images } from "../../constants/carousel";
-
-
+import { Hotel, searchHotels } from "../../helpers/hotelsapi";
 
 export default function Index() {
+  const [hotels, setHotels] = useState<Hotel[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    loadHotels();
+  }, []);
+
+  const loadHotels = async () => {
+    try {
+      const data = await searchHotels("Schuyler");
+
+      console.log("API RESPONSE:", data);
+
+      setHotels(data?.hotels ?? data?.data?.hotels ?? []);
+    } catch (err) {
+      console.log("ERROR:", err);
+      setError(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const infoData = [
-    "Our rooms are $65.00 per night for both\
-    single and double beds. Rooms are non-smoking.\
-    For reservations or extended stays call:\
-    402-352-5454. For all other questions, call\
-    402-615-3327.",
-    "We accept cash, credit, visa, and mastercard.\
-    Sorry, no checks.",
-    "This hotel offers a public break room and small\
-    kitchenette for guests to use. We are located next to\
-    a grocery store/pharmacy, mexican restaurant, and car\
-    wash.",
-    "Monday through Saturday hours are from 8:00AM to 10:00PM\
-    Sundays are from 8:00AM to 6:00PM",
-    "Address: 222 West 16th Street, Schuyler, NE 68661\
-    If you have any additional questions, contact us\
-    with email at manager@schuylerinn.com",
+    "Our rooms are $65.00 per night...",
+    "We accept cash, credit...",
+    "This hotel offers a public break room...",
+    "Monday through Saturday hours...",
+    "Address: 222 West 16th Street...",
   ];
 
   const images = Object.values(Images).map((source, index) => ({
@@ -42,10 +54,15 @@ export default function Index() {
     source,
   }));
 
-  const links = [
-    "./about" as RelativePathString,
-    "./reserve" as RelativePathString,
-  ];
+  const links: Href[] = ["/about", "/reserve"];
+
+  if (loading) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <ActivityIndicator size="large" color="purple" />
+      </View>
+    );
+  }
 
   return (
     <LinearGradient
@@ -53,63 +70,91 @@ export default function Index() {
       className="flex-1"
     >
       <SafeAreaView className="flex-1">
-        <ScrollView
-          className="flex-1"
-          contentContainerClassName="items-center pb-10"
-        >
-          <View className="flex-1 w-full items-center mb-20">
-            <Text className="text-h1 text-white mb-5 text-center">
-              Welcome to the Schuyler Inn
-            </Text>
+        <FlatList
+          data={hotels}
+          keyExtractor={(item, index) =>
+            item.id?.toString() ?? index.toString()
+          }
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
+          renderItem={({ item }) => (
+            <View className="mb-4 px-5">
+              <Text className="font-bold text-white text-lg">
+                {item.name}
+              </Text>
+              <Text className="text-white/80">
+                {item.address}
+              </Text>
+            </View>
+          )}
+          ListHeaderComponent={
+            <View>
+            {error && (
+              <Text className="mt-10 text-red-500 text-center mb-4">
+                Error: {error}
+              </Text>
+            )}
 
-            {/* Image Carousel */}
-            <View className="w-full">
-              <FlatList
-                data={images}
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
-                  <View className="w-screen items-center">
-                    <Image
-                      source={item.source}
-                      className="w-4/5 h-64 border-2 border-white"
-                      resizeMode="cover"
-                    />
+
+              <View className="items-center pb-5">
+                <Text className="text-3xl font-bold text-white text-center my-5 px-4">
+                  Welcome to the Schuyler Inn
+                </Text>
+
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  className="w-full h-[220px]"
+                >
+                  {images.map((item) => (
+                    <View
+                      key={item.id}
+                      className="w-[300px] items-center self-center"
+                    >
+                      <Image
+                        source={item.source}
+                        className="w-[90%] h-[200px] border-2 border-white rounded-lg"
+                        resizeMode="cover"
+                      />
+                    </View>
+                  ))}
+                </ScrollView>
+
+                <Text className="text-white text-center mt-2 italic">
+                  Scroll images left and right for more
+                </Text>
+
+                <View className="mt-5 items-center w-full px-4">
+                  {infoData.map((text, index) => (
+                    <InfoBox key={index}>{text}</InfoBox>
+                  ))}
+
+                  <InfoBox>
+                    <View className="items-center">
+                      <Text className="mb-2 font-bold text-lg">
+                        Rooms include:
+                      </Text>
+                      <BulletItem>Free Wifi</BulletItem>
+                      <BulletItem>Non-smoking rooms</BulletItem>
+                      <BulletItem>Public break room</BulletItem>
+                      <BulletItem>Kitchenette access</BulletItem>
+                    </View>
+                  </InfoBox>
+
+                  <View className="mt-6 w-full items-center">
+                    {links.map((path, index) => (
+                      <LinkText key={index} to={path}>
+                        {typeof path === "string"
+                          ? path.replace("/", "").toUpperCase()
+                          : "LINK"}
+                      </LinkText>
+                    ))}
                   </View>
-                )}
-              />
-            </View>
-
-            <Text className="text-center text-white text-h2 mt-4">
-              Scroll images left and right for more
-            </Text>
-
-            {/* Info Boxes */}
-            <View className="justify-center items-center mt-6">
-              {infoData.map((text, index) => (
-                <InfoBox key={index}>{text}</InfoBox>
-              ))}
-
-              <InfoBox>
-                <View className="items-center">
-                  <Text className="mb-2">Rooms include:</Text>
-                  <BulletItem>Free Wifi</BulletItem>
-                  <BulletItem>Non-smoking rooms</BulletItem>
-                  <BulletItem>Public break room</BulletItem>
-                  <BulletItem>Kitchenette access</BulletItem>
                 </View>
-              </InfoBox>
-
-              {links.map((text, index) => (
-                <LinkText key={index} to={text}>
-                  {text.replace("./", "")}
-                </LinkText>
-              ))}
+              </View>
             </View>
-          </View>
-        </ScrollView>
+          }
+        />
       </SafeAreaView>
     </LinearGradient>
   );

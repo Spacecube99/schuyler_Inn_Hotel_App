@@ -11,7 +11,7 @@ const About = () => {
     >
     <SafeAreaView className="flex-1 justify-center items-center">
       <View className="flex-1 justify-top items-center">
-          <Text className="text-h1 text-center text-white border-white border-b-2">About Us</Text>
+          <Text className="text-5xl text-center text-white border-white border-b-2 mt-14">About Us</Text>
           <Text className="text-h2 text-center text-white mt-10">
             Welcome to the Schuyler Inn, information about the hotel
             will go here.
